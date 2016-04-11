@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+	<host></host>
+	<username></username>
+	<database></database>
+	<password></password>
+	<charset>utf8_general_ci</charset>
+</config>	

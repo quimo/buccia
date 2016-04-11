@@ -1,0 +1,167 @@
+/******************************************************
+REGOLE VALIDE PER TUTTE LE RISOLUZIONI
+******************************************************/
+body {
+	font-family: 'Verdana', 'Arial', sans-serif;
+	font-size: 1em;
+}
+
+h1, h2, p {
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	font-size: 1.7em;
+}
+
+h2 {
+	font-size: 1.3em;
+}
+
+#content p {
+	margin: 1em 0;
+}
+
+ul {
+	margin-left: 0;
+}
+
+ul li {
+	margin-bottom: 0.5em;
+}
+
+#container {
+	max-width: 960px;
+	margin: 0 auto;
+}
+
+/* HEADER --------------------------------------- */
+
+/* qua gli stili */
+
+/* MENU------------------------------------------ */
+
+#togglemenu {
+	display: none;
+	cursor: pointer;
+}
+
+.menu {
+}
+
+.submenu {
+	display: none;
+}	
+
+.menu li {
+	list-style-type: none;
+	float: left;
+}
+
+/* CONTENT --------------------------------------- */
+
+#content {
+	overflow: hidden;
+	background: #CCC;
+}
+
+#main {
+	width: 80%;
+	float: left;
+	background: #CCC;
+}
+
+#rightbar {
+	width: 20%;
+	float: right;
+	background: #DDD;
+}
+
+#footer {
+	overflow: hidden;
+	background: #EEE;
+}
+
+/* VARIE --------------------------------------- */
+
+.box {
+	padding: 1em;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+/*------------------------------------------------------------------------------ */
+
+@media only screen and (min-width: 320px) {
+
+	/* Small screen, non-retina */
+
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 320px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 320px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 320px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 320px),
+only screen and (                min-resolution: 192dpi) and (min-width: 320px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 320px) { 
+
+	/* Small screen, retina, stuff to override above media query */
+
+}
+
+@media only screen and (min-width: 700px) {
+
+	/* Medium screen, non-retina */
+
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 700px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (                min-resolution: 192dpi) and (min-width: 700px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 700px) { 
+
+	/* Medium screen, retina, stuff to override above media query */
+
+}
+
+@media only screen and (min-width: 1300px) {
+
+	/* Large screen, non-retina */
+  
+	div.demo {
+		background-image: url(demo.png); /* immagine di 100 x 100 pixel */
+		width: 100px;
+		height: 100px;
+	}
+
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 1300px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 1300px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 1300px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 1300px),
+only screen and (                min-resolution: 192dpi) and (min-width: 1300px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 1300px) { 
+
+	/* Large screen, retina, stuff to override above media query */
+	
+	div.demo {
+		background-image: url(demo@2x.png); /* immagine di 200 x 200 pixel forzata a 100 */
+		background-size: 100px 100px;
+		width: 100px;
+		height: 100px;
+	}
+
+}
