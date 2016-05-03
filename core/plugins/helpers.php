@@ -1,10 +1,10 @@
 <?php
 	class Helpers {
-		
+
 		static function normalizeBrandname($name) {
 			return strtolower(str_replace(' ','-',$name));
 		}
-		
+
 		static function renderSelectOptions($data, $selected = '', $default = '-', $class='') {
 			$dummy = ($class) ? " class=\"$class first\"" : 'class="first"';
 			$html = ($default !== false) ? "<option value=\"\"$dummy>$default</option>" : '';
@@ -18,14 +18,14 @@
 				$dummy .= ($class) ? "\"" : '';
 				$html .= "<option $dummy value=\"$key\"";
 				if ($selected) {
-					if ($selected == $key) $html .= ' selected="selected" ';	
-				}	
+					if ($selected == $key) $html .= ' selected="selected" ';
+				}
 				$html .= ">$value</option>";
 				$i++;
 			}
 			return $html;
 		}
-		
+
 		static function renderSelectMultioptions($data, $selected = '', $default = '-', $class='') {
 			$selected = (is_array($selected)) ? $selected : explode(',',$selected);
 			$dummy = ($class) ? " class=\"$class first\"" : 'class="first"';
@@ -39,13 +39,13 @@
 				if ($i == count($data)-1 && !$class) $dummy = "class=\"last\"";
 				$dummy .= ($class) ? "\"" : '';
 				$html .= "<option $dummy value=\"$key\"";
-				if (in_array($key,$selected)) $html .= ' selected="selected" ';	
+				if (in_array($key,$selected)) $html .= ' selected="selected" ';
 				$html .= ">$value</option>";
 				$i++;
 			}
 			return $html;
 		}
-		
+
 		static function renderSelectOptiongroups($data, $selected = '', $default = '-', $class='') {
 			$dummy = ($class) ? " class=\"$class first\"" : 'class="first"';
 			$html = ($default !== false) ? "<option value=\"\"$dummy>$default</option>" : '';
@@ -60,22 +60,22 @@
 					if ($i == count($value)-1 && !$class) $dummy = "class=\"last\"";
 					$dummy .= ($class) ? "\"" : '';
 					$html .= "<option $dummy value=\"$key2\"";
-					if ($selected == $key2) $html .= ' selected="selected" ';	
+					if ($selected == $key2) $html .= ' selected="selected" ';
 					$html .= ">$value2</option>";
 					$i++;
 				}
 				$html .= "</optgroup>";
-			}	
-				
-			
+			}
+
+
 			return $html;
 		}
-		
+
 		static function getStato($id) {
 			$stati = self::getStati();
 			return $stati[$id];
 		}
-		
+
 		static function getStati() {
 			return array(
 				1 => 'Afghanistan',
@@ -283,7 +283,7 @@
 				'Altro'
 			);
 		}
-		
+
 		static function getRegioni() {
 			return array(
 				1 => 'Abruzzo',
@@ -308,10 +308,35 @@
 				'Veneto'
 			);
 		}
-		
+
+		static function getRegioniSigla() {
+			return array(
+				'Abruzzo' => 'Abruzzo',
+				'Basilicata' => 'Basilicata',
+				'Calabria' => 'Calabria',
+				'Campania' => 'Campania',
+				'Emilia-Romagna' => 'Emilia-Romagna',
+				'Friuli-Venezia Giulia' => 'Friuli-Venezia Giulia',
+				'Lazio' => 'Lazio',
+				'Liguria' => 'Liguria',
+				'Lombardia' => 'Lombardia',
+				'Marche' => 'Marche',
+				'Molise' => 'Molise',
+				'Piemonte' => 'Piemonte',
+				'Puglia' => 'Puglia',
+				'Sardegna' => 'Sardegna',
+				'Sicilia' => 'Sicilia',
+				'Toscana' => 'Toscana',
+				'Trentino-Alto Adige' => 'Trentino-Alto Adige',
+				'Umbria' => 'Umbria',
+				'Val d\'Aosta' => 'Val d\'Aosta',
+				'Veneto' => 'Veneto'
+			);
+		}
+
 		static function getProvinceByRegione($id) {
 			switch($id) {
-				case 1: 
+				case 1:
 				case 'Abruzzo';
 					return array(
 						1 => 'L\'Aquila',
@@ -378,7 +403,7 @@
 						'Rieti',
 						'Roma',
 						'Viterbo'
-					);	
+					);
 					break;
 				case 8:
 				case 'Liguria':
@@ -387,7 +412,7 @@
 						'Imperia',
 						'La Spezia',
 						'Savona'
-					);	
+					);
 					break;
 				case 9:
 				case 'Lombardia':
@@ -507,9 +532,9 @@
 				case 'Val d\'aosta':
 					return array(
 						103 => 'Aosta'
-					);	
+					);
 					break;
-				case 20:	
+				case 20:
 				case 'Veneto':
 					return array(
 						104 => 'Belluno',
@@ -523,13 +548,13 @@
 					break;
 			}
 		}
-		
+
 		static function getProvinciaById($id) {
 			$province = self::getProvinceId();
 			if ($id) return $province[$id];
 			return false;
 		}
-		
+
 		static function getProvinceId() {
 			return array(
 				80 => 'Agrigento',
@@ -641,10 +666,10 @@
 				109 => 'Verona',
 				11 => 'Vibo Valentia',
 				110 => 'Vicenza',
-				34 => 'Viterbo'				  
+				34 => 'Viterbo'
 			);
 		}
-		
+
 		static function getProvinceSigla() {
 			return array(
 				'AG' => 'Agrigento',
@@ -756,10 +781,10 @@
 				'VR' => 'Verona',
 				'VV' => 'Vibo Valentia',
 				'VI' => 'Vicenza',
-				'VT' => 'Viterbo'				  
+				'VT' => 'Viterbo'
 			);
 		}
-		
+
 		static function getDaysOfWeek($mode = 0) {
 			switch($mode) {
 				case 0: return array(
@@ -791,34 +816,34 @@
 				);
 			}
 		}
-		
+
 		static function datetimeToItaTime($datetime) {
 			$dummy = explode(' ',$datetime);
 			$time = explode(':',$dummy[1]);
 			return $time[0].':'.$time[1];
 		}
-		
+
 		static function datetimeToItaDate($datetime) {
 			$dummy = explode(' ',$datetime);
 			$date = explode('-',$dummy[0]);
 			return $date[2].'/'.$date[1].'/'.$date[0];
 		}
-		
+
 		static function dateItaToDateTime($date) {
 			$dummy = explode('/',$date);
 			return $dummy[2].'-'.$dummy[1].'-'.$dummy[0].' 00:00:01';
-		}	
-		
+		}
+
 		static function dateItaToDate($date) {
 			$dummy = explode('/',$date);
 			return $dummy[2].'-'.$dummy[1].'-'.$dummy[0];
 		}
-		
+
 		/* dateIsInRange **************************************************************
 			verifica se la data $date è in un intervallo specifico
 			le date sono nella forma '22-10-2015 14:30:45'
-		******************************************************************************/	
-		
+		******************************************************************************/
+
 		static function dateIsInRange($start,$end,$date='') {
 			$start = strtotime($start);
 			$end = strtotime($end);
@@ -831,7 +856,7 @@
 			if ($now >= $start && $now <= $end) return true;
 			return false;
 		}
-		
+
 		static function datediff($tipo, $partenza, $fine)
 		{
 			switch ($tipo)
@@ -857,7 +882,7 @@
 			$date_diff  = floor(($date_diff / 60 / 60 / 24) / $tipo);
 			return $date_diff;
 		}
-		
+
 		static function getDaysOfMonth($month) {
 			$days = array(
 				0,
@@ -876,7 +901,7 @@
 			);
 			return $days[$month];
 		}
-		
+
 		static function normalizePhone($number) {
 			$number = preg_replace('/\s+/','',$number);
 			$number = str_replace('-','',$number);
@@ -884,21 +909,21 @@
 			$number = str_replace('+','00',$number);
 			return $number;
 		}
-		
+
 		/* getPostValue *************************************************************
 			recupera un dato in post e se non esiste imposta un default
 		****************************************************************************/
 		static function getPostValue($field,$default_value='') {
 			return (isset($_POST[$field])) ? $_POST[$field] : $default_value;
 		}
-		
+
 		/* getGetValue **************************************************************
 			recupera un dato in get e se non esiste imposta un default
 		****************************************************************************/
 		static function getGetValue($field,$default_value='') {
 			return (isset($_GET[$field])) ? $_GET[$field] : $default_value;
 		}
-		
+
 		/* sendEmail ****************************************************************
 			invia una email
 		****************************************************************************/
@@ -907,20 +932,20 @@
     		"Reply-To: $email_from\r\n".
     		"X-Mailer: PHP/".phpversion();
 			$header_ .= "MIME-Version: 1.0\r\nContent-type: text/plain; charset=UTF-8\r\n";
-  			mail($email_to, '=?UTF-8?B?'.base64_encode($subject).'?=', utf8_encode($message), $header_ . $header);	
+  			mail($email_to, '=?UTF-8?B?'.base64_encode($subject).'?=', utf8_encode($message), $header_ . $header);
 		}
 
 		/* arrayToKeyValuePairs *****************************************************
 			trasforma un array a più dimensioni in un array chiave / valore
-		****************************************************************************/		
+		****************************************************************************/
 		static function arrayToKeyValuePairs($data,$key_field,$value_field) {
 			$dummy = array();
 			for ($i = 0; $i < count($data); $i++) {
 				$dummy[$data[$i][$key_field]] = $data[$i][$value_field];
 			}
 			return $dummy;
-		}	
-		
+		}
+
 		/* getField ***************************************************************************
 		   recupera una colonna di dati
 		**************************************************************************************/
@@ -930,10 +955,10 @@
 				for ($i = 0; $i < count($data); $i++) {
 					$fields[$i] = $data[$i][$field];
 				}
-			} else $fields = false;	
+			} else $fields = false;
 			return $fields;
 		}
-		
+
 		/* inArrayAndDelete *********************************************************
 			cerca in $destination_array i valori in $tofind_array
 			i valori trovati vengono rimossi dall'array e viene
@@ -946,7 +971,7 @@
 			}
 			return $dummy;
 		}
-		
+
 		/* inArrayAndInsert *********************************************************
 			inserisce in $destination_array i valori in $tofind_array
 			se questi non sono già presenti
@@ -957,13 +982,13 @@
 			}
 			return $destination_array;
 		}
-		
+
 		static function truncate($string,$chars) {
 			if ($chars < strlen($string)) return substr($string,0,$chars).'...';
 			else return $string;
 		}
-		
-		
+
+
 		static function html2txt($string) {
 			$search = array(
 				'@<script[^>]*?>.*?</script>@si',				// Strip out javascript
@@ -976,8 +1001,8 @@
 
 
 		/* makeUnique *****************************************************************
-			genera una stringa casuale 
-		******************************************************************************/	
+			genera una stringa casuale
+		******************************************************************************/
 		function makeUnique ($length = 16) {
 			$salt       = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345678';
 			$len        = strlen($salt);
@@ -988,18 +1013,18 @@
 			}
 			return $makepass;
 		}
-		
+
 		/* udate *****************************************************************
 			ritorna una data con i microsecondi: echo udate('Y-m-d H:i:s.u');
-		******************************************************************************/	
-		
+		******************************************************************************/
+
 		function udate($format = 'u', $utimestamp = null) {
 				if (is_null($utimestamp)) $utimestamp = microtime(true);
 				$timestamp = floor($utimestamp);
 				$milliseconds = round(($utimestamp - $timestamp) * 1000000);
 				return date(preg_replace('`(?<!\\\\)u`', $milliseconds, $format), $timestamp);
 			}
-		
+
 		/**
 		 * Strip out (X)HTML tags and invisible content.  This function
 		 * is useful as a prelude to tokenizing the visible text of a page
@@ -1067,7 +1092,7 @@
 			// Remove all remaining tags and comments and return.
 			return strip_tags( $text );
 		}
-		
-		
+
+
     }
 ?>
