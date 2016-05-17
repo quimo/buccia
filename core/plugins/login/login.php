@@ -1,7 +1,7 @@
 <?php
 
 	/*
-	
+
 	CREATE TABLE IF NOT EXISTS `utenti` (
 		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		`session_id` char(32) DEFAULT NULL,
@@ -15,12 +15,12 @@
 		`role` tinyint(4) NOT NULL DEFAULT '0',
 		PRIMARY KEY (`id`)
 	) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-	
+
 	INSERT INTO `utenti` (`id`, `session_id`, `email`, `password`, `lost_password_code`, `created_on`, `last_login`, `logins`, `state`, `role`) VALUES
 (1, NULL, 's.alati@zenzerocomunicazione.it', '27babe82445c81d01defcbbac58a95f0', 'V6PAvceOGPbS682wHaGthL8YOaCwiGvm', '2015-05-29 00:00:00', '2015-05-29 00:00:00', 0, 1, 99);
 
 	(la password è aaaaaaaa)
-	
+
 	CREATE TABLE IF NOT EXISTS `utenti_dettagli` (
 		`id` int(11) NOT NULL,
 		`nome` varchar(50) NOT NULL,
@@ -48,11 +48,11 @@
 	*/
 
 	class Login extends Database {
-	
+
 		const USERS_TABLE = 'utenti';
 		const USERS_DETAILS_TABLE = 'utenti_dettagli';
 		const PASSWORD_SALT = 'quimosalt';
-		
+
 		const SMTP_EMAIL_SENDER = 'info@appname.it';
 		const SMTP_ADMIN_EMAIL = 'smtp@mittente.it';
 		const SMTP_ADMIN_EMAIL_FROM = 'Mittente srl';
@@ -61,19 +61,33 @@
 		const RESET_PASSWORD_LANDING_PAGE = 'reset-password.php';
 		const RESET_PASSWORD_LANDING_PAGE_MOBILE = 'reset-password_mobile.php';
 		const SMTP_EMAIL_BCC = 's.alati@zenzerocomunicazione.it';
-		
+
 		private $config;
 		private $data;
 		private $reset_password_landing_url;
 		private $reset_password_landing_url_mobile;
-		
+
 		public function __construct() {
 			$conn = Connection::xml();
 			$this->reset_password_landing_url = Config::get('baseurl').Login::RESET_PASSWORD_LANDING_PAGE;
 			$this->reset_password_landing_url_mobile = Config::get('baseurl').Login::RESET_PASSWORD_LANDING_PAGE_MOBILE;
 			$this->db = parent::__construct($conn);
 		}
-		
+
+		/* getPasswordSalt *************************************************************
+			ritorna il seme usato nella generazione dellla password
+		*******************************************************************************/
+        public static function getPasswordSalt() {
+            return Login::PASSWORD_SALT;
+        }
+
+        /* cryptPassword ***************************************************************
+			cripta una password
+		*******************************************************************************/
+        public static function cryptPassword($password) {
+            return md5(Login::PASSWORD_SALT.$password);
+        }
+
 		/* check ***********************************************************************
 			controlla la presenza di un utente
 		*******************************************************************************/
@@ -93,7 +107,7 @@
 			}
 			return $id;
 		}
-		
+
 		/* checkAdmin ******************************************************************
 			controlla la presenza di un admin
 		*******************************************************************************/
@@ -106,14 +120,14 @@
 				'password' => md5(Login::PASSWORD_SALT.$password),
 				'state' => 1,
 				'role' => 99
-			));	
+			));
 			if ($id !== false) {
 				/* salva la sessione */
 				$this->update(Login::USERS_TABLE, array('session_id' => session_id()), $id);
 			}
 			return $id;
 		}
-		
+
 		/* checkEmail *******************************************************************
 			verifica l'esistenza della mail
 		********************************************************************************/
@@ -128,7 +142,7 @@
 			}
 			return false;
 		}
-		
+
 		/* getAllMailAddress *******************************************************************
 			recupera tutte le email degli utenti attivi in base al ruolo
 		********************************************************************************/
@@ -144,7 +158,7 @@
 			}
 			return false;
 		}
-		
+
 		/* checkEmail *******************************************************************
 			verifica l'esistenza di una doppia mail (id è l'identificativo del record corrente
 		********************************************************************************/
@@ -157,13 +171,13 @@
 				if ($dummy !== false) return 1;
 				return 0;
 			}
-			
+
 		}
-		
+
 		public function sendMessage($subject,$message,$email) {
 			/* imposto l'invio */
 			$mail = new PHPMailer();
-			$mail->IsSMTP(); 
+			$mail->IsSMTP();
 			$mail->CharSet = "utf-8";
 			$mail->Host = Login::SMTP_HOST;
 			$mail->SMTPAuth = false;
@@ -184,7 +198,7 @@
 			if (!$mail->Send()) return false;
 			return true;
 		}
-		
+
 		/* sendRememberPasswordMessage **************************************************
 			invia il messaggio di reset password (richiede PHPMailer)
 		********************************************************************************/
@@ -197,7 +211,7 @@
 				$message = str_replace('[+code+]',$html_code,$message);
 				/* imposto l'invio */
 				$mail = new PHPMailer();
-				$mail->IsSMTP(); 
+				$mail->IsSMTP();
 				$mail->CharSet = "utf-8";
 				$mail->Host = Login::SMTP_HOST;
 				$mail->SMTPAuth = false;
@@ -220,7 +234,7 @@
 			}
 			return false;
 		}
-		
+
 		/* sendRememberPasswordMessageMobile **************************************************
 			invia il messaggio di reset password nella versione mobile (richiede PHPMailer)
 		********************************************************************************/
@@ -233,7 +247,7 @@
 				$message = str_replace('[+code+]',$html_code,$message);
 				/* imposto l'invio */
 				$mail = new PHPMailer();
-				$mail->IsSMTP(); 
+				$mail->IsSMTP();
 				$mail->CharSet = "utf-8";
 				$mail->Host = Login::SMTP_HOST;
 				$mail->SMTPAuth = false;
@@ -256,14 +270,14 @@
 			}
 			return false;
 		}
-		
+
 		/* sendPasswordChangedMessage **************************************************
 			invia il messaggio di password cambiata (richiede PHPMailer)
 		********************************************************************************/
 		public function sendPasswordChangedMessage($subject,$message,$email) {
 			/* imposto l'invio */
 			$mail = new PHPMailer();
-			$mail->IsSMTP(); 
+			$mail->IsSMTP();
 			$mail->CharSet = "utf-8";
 			$mail->Host = Login::SMTP_HOST;
 			$mail->SMTPAuth = false;
@@ -284,7 +298,7 @@
 			if (!$mail->Send()) return false;
 			return true;
 		}
-		
+
 		/* setLostPasswordCode **********************************************************
 			imposta il codice per resettare la password
 		********************************************************************************/
@@ -301,7 +315,7 @@
 			}
 			return false;
 		}
-		
+
 		/* isValidLostPasswordCode ******************************************************
 			controlla se un codice è ancora presente
 		********************************************************************************/
@@ -312,7 +326,7 @@
 			if ($id !== false) return true;
 			return false;
 		}
-		
+
 		/* resetPassword ****************************************************************
 			aggiorna la password
 		********************************************************************************/
@@ -332,7 +346,7 @@
 			$statement->execute(array(null));
 			return $id;
 		}
-		
+
 		/* isLogged ********************************************************************
 			controlla se un utente è loggato
 		*******************************************************************************/
@@ -340,10 +354,10 @@
 			$id = $this->search(Login::USERS_TABLE, array(
 				'session_id' => session_id()
 			));
-			if ($id) return true;	
+			if ($id) return true;
 			return false;
 		}
-		
+
 		/* isAdmin ********************************************************************
 			controlla se un utente è admin
 		*******************************************************************************/
@@ -360,16 +374,16 @@
 			if (Helpers::datediff('G', Helpers::dateTimeToItaDate($logged[0]['last_login']), $now) >= $days) return true;
 			return false;
 		}
-		
+
 		/* logout ***********************************************************************
 			esegue il logout rimuovendo la sessione
 		********************************************************************************/
 		function logout() {
-			$query = "UPDATE ".Login::USERS_TABLE." SET session_id = ? WHERE session_id = '".session_id()."'";	
+			$query = "UPDATE ".Login::USERS_TABLE." SET session_id = ? WHERE session_id = '".session_id()."'";
 			$statement = $this->db->prepare($query);
 			$statement->execute(array(''));
 		}
-		
+
 		/* getLoggedUser *******************************************************************
 			ritorna i dati dell'utente loggato
 		***********************************************************************************/
@@ -377,7 +391,7 @@
 			$this->data = $this->query("SELECT * FROM ".Login::USERS_TABLE." WHERE session_id = '".session_id()."' LIMIT 1");
 			return $this->data;
 		}
-		
+
 		/* getLoggedUserId *****************************************************************
 			ritorna l'id dell'utente loggato
 		***********************************************************************************/
@@ -385,7 +399,7 @@
 			$dummy = $this->getLoggedUser();
 			return $dummy[0]['id'];
 		}
-		
+
 		/* getUser *************************************************************************
 			ritorna i dati di un utente
 		***********************************************************************************/
@@ -393,12 +407,12 @@
 			$this->data = $this->query("SELECT * FROM ".Login::USERS_TABLE." WHERE id = $id LIMIT 1");
 			return $this->data;
 		}
-		
+
 		function getUserByEmail($email) {
 			$this->data = $this->query("SELECT * FROM ".Login::USERS_TABLE." WHERE email = '$email' LIMIT 1");
 			return $this->data;
 		}
-		
+
 		/* getUserDetails ******************************************************************
 			ritorna i dati di un utente
 		***********************************************************************************/
@@ -406,22 +420,22 @@
 			$this->data = $this->query("SELECT * FROM ".Login::USERS_DETAILS_TABLE." WHERE id = $id LIMIT 1");
 			return $this->data;
 		}
-		
+
 		/* updateLastLogin *****************************************************************
 			aggiorna la data di ultimo login
 		***********************************************************************************/
 		function updateLastLogin() {
-			$query = "UPDATE ".Login::USERS_TABLE." SET last_login = ?, logins = logins + 1 WHERE session_id = '".session_id()."'";	
+			$query = "UPDATE ".Login::USERS_TABLE." SET last_login = ?, logins = logins + 1 WHERE session_id = '".session_id()."'";
 			$statement = $this->db->prepare($query);
 			$statement->execute(array(date('Y-m-d H:i:s')));
 		}
-		
+
 		/* sendCreatedAccountNotice ****************************************************
 			invia il messaggio di creazione account (richiede PHPMailer)
 		********************************************************************************/
 		public function sendCreatedAccountNotice($subject,$message) {
 			$mail = new PHPMailer();
-			$mail->IsSMTP(); 
+			$mail->IsSMTP();
 			$mail->CharSet = "utf-8";
 			$mail->Host = Login::SMTP_HOST;
 			$mail->SMTPAuth = false;
@@ -439,9 +453,9 @@
 			$mail->Subject  = $subject;
 			$mail->Body = $message;
 			$mail->Send();
-			
+
 			$mail = new PHPMailer();
-			$mail->IsSMTP(); 
+			$mail->IsSMTP();
 			$mail->CharSet = "utf-8";
 			$mail->Host = Login::SMTP_HOST;
 			$mail->SMTPAuth = false;
@@ -460,14 +474,14 @@
 			$mail->Body = $message;
 			$mail->Send();
 		}
-		
+
 		/* sendCreatedAccountMessage ****************************************************
 			invia il messaggio di creazione account (richiede PHPMailer)
 		********************************************************************************/
 		public function sendCreatedAccountMessage($subject,$message,$email) {
 			/* imposto l'invio */
 			$mail = new PHPMailer();
-			$mail->IsSMTP(); 
+			$mail->IsSMTP();
 			$mail->CharSet = "utf-8";
 			$mail->Host = Login::SMTP_HOST;
 			$mail->SMTPAuth = false;
@@ -488,7 +502,7 @@
 			if (!$mail->Send()) return false;
 			return true;
 		}
-		
+
 	}
-	
-?>	
+
+?>
