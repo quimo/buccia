@@ -24,7 +24,7 @@
 
 		private static $pars = array(			//parametri
 			'platform_dev_author' => 'Simone Alati',
-			'platform_dev_email' => 's.alati@zenzerocomunicazione.it',
+			'platform_dev_email' => 'simone.alati@gmail.com',
 			'app_name' => 'Appname v.1.0',
 			'app_mail' => 'info@appname.it'
 		);
